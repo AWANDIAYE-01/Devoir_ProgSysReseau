@@ -6,25 +6,27 @@
 // Déclaration des sémaphores
 sem_t semaphore1, semaphore2;
 int valeur = 0;  // La valeur partagée
-int n;           // Limite supérieure/inférieure
-
+int n=20;           // Limite supérieure/inférieure
+int conter = 0;
 // Fonction pour le thread 1 (+1)
 void* thread1_fonction(void* arg) {
-    for (int i = 1; i <= n; i++) {
-        sem_wait(&semaphore1); // Attendre que le sémaphore 1 soit disponible
-        valeur++;
-        printf("Thread 1: %d\n", valeur);
-        sem_post(&semaphore2); // Libérer le sémaphore 2
+    while(1){
+        sem_wait(&semaphore1);
+        for(valeur=0;valeur<n;valeur++){
+            conter ++;
+            printf("%d\n",conter);}
+        sem_post(&semaphore2);
     }
     pthread_exit(NULL);
 }
 
 // Fonction pour le thread 2 (-1)
 void* thread2_fonction(void* arg) {
-    for (int i = 1; i <= n; i++) {
-        sem_wait(&semaphore2); // Attendre que le sémaphore 2 soit disponible
-        valeur--;
-        printf("Thread 2: %d\n", valeur);
+       while(1){
+        sem_wait(&semaphore2);// Attendre que le sémaphore 2 soit disponible
+            for(valeur=0;valeur<n;valeur++){
+                conter--;
+            printf("%d\n",conter);}
         sem_post(&semaphore1); // Libérer le sémaphore 1
     }
     pthread_exit(NULL);
