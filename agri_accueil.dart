@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'settings_page.dart'; // Assurez-vous d'importer la page des paramètres ici
 
 class FarmerDashboardPage extends StatefulWidget {
   const FarmerDashboardPage({super.key});
@@ -43,21 +44,6 @@ class _FarmerDashboardPageState extends State<FarmerDashboardPage> {
     setState(() {
       _products.removeAt(index);
     });
-  }
-
-  void _withdrawBalance() {
-    if (_balance > 0) {
-      setState(() {
-        _balance = 0.0;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Paiement effectué avec succès !")),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Aucun solde disponible.")),
-      );
-    }
   }
 
   void _editProduct(int index) {
@@ -140,6 +126,19 @@ class _FarmerDashboardPageState extends State<FarmerDashboardPage> {
       appBar: AppBar(
         title: const Text("Tableau de bord - Agriculteur"),
         backgroundColor: Colors.teal,
+        actions: [
+          // Icône de paramètres
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              // Naviguer vers la page des paramètres
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -190,10 +189,12 @@ class _FarmerDashboardPageState extends State<FarmerDashboardPage> {
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          // Bouton pour modifier le produit
                           IconButton(
                             icon: const Icon(Icons.edit, color: Colors.blue),
                             onPressed: () => _editProduct(index),
                           ),
+                          // Bouton pour supprimer le produit
                           IconButton(
                             icon: const Icon(Icons.delete, color: Colors.red),
                             onPressed: () => _removeProduct(index),
@@ -300,7 +301,9 @@ class _FarmerDashboardPageState extends State<FarmerDashboardPage> {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _withdrawBalance,
+              onPressed: () {
+                // Fonction pour récupérer l'argent
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.teal,
                 foregroundColor: Colors.white,
